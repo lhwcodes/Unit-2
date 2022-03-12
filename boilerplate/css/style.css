@@ -1,19 +1,38 @@
 /*Add CSS styles here*/
 #map {    
     height: 400px;    
-    width: 70%;
+    width: 100%;
     display: inline-block;
     }
-
-#panel {    
-        width: 25%;    
-        padding: 20px;
-        display: inline-block;
-        vertical-align: top;
-        text-align: center;
-        line-height: 42px;
+    .sequence-control-container {  
+        width: 350px;  
+        height: 30px;  
+        background-color: whitesmoke;  
+        padding: 10px;  
+        line-height: 45px;  
+        text-align: center;  
+        border: solid gray 1px;  
+    }  
+    
+    .range-slider {  
+        width: 250px;  
+    }  
+    
+    .step {  
+        width: 40px;  
+    }  
+    
+    .step img {  
+        width: 100%;  
+        height: auto;  
     }
-.leaflet-popup-content p {
+
+    .leaflet-popup-content p {
     margin: 0.2em 0;
-}
+    }
+    .legend-control-container {
+        background-color: whitesmoke;
+        text-align: center;
+
+    }
 

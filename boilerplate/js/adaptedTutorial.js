@@ -2,6 +2,15 @@
 var map;
 var minValue;
 
+//Example 1.2 line 1...PopupContent constructor function
+function PopupContent(properties, attribute){
+    this.properties = properties;
+    this.attribute = attribute;
+    this.year = attribute.split("_")[1];
+    this.population = this.properties[attribute];
+    this.formatted = "<p><b>City:</b> " + this.properties.City + "</p><p><b>Population in " + this.year + ":</b> " + this.population + " million</p>";
+};
+
 //step 1 create map
 function createMap(){
 
@@ -75,16 +84,12 @@ function pointToLayer(feature, latlng, attributes){
     //create circle marker layer
     var layer = L.circleMarker(latlng, options);
 
-    //build popup content string starting with city...Example 2.1 line 24
-    var popupContent = "<p><b>City:</b> " + feature.properties.City + "</p>";
-
-    //add formatted attribute to popup content string
-    var year = attribute.split("_")[1];
+    var popup = new PopupContent(feature.properties, attribute);
     
-    popupContent += "<p><b>Population in " + year + ":</b> " + feature.properties[attribute] + " million</p>";
-
     //bind the popup to the circle marker
-    layer.bindPopup(popupContent);
+    layer.bindPopup(popup.formatted,{
+        offset: new L.point(0,-options.radius)
+    });
     
     //return the circle marker to the L.geoJson pointToLayer option
     return layer;
@@ -127,15 +132,15 @@ function processData(data){
 function createSequenceControls(attributes){
     //create range input element (slider)
     var slider = "<input class='range-slider' type='range'></input>";
-    document.querySelector("#panel").insertAdjacentHTML('beforeend',slider);
+    document.querySelector("#map").insertAdjacentHTML('beforebegin',slider);
 
     document.querySelector('.range-slider').max = 6;
     document.querySelector('.range-slider').min = 0;
     document.querySelector('.range-slider').value = 0;
     document.querySelector('.range-slider').step = 1;
     //below Example 3.6...add step buttons
-    document.querySelector('#panel').insertAdjacentHTML('afterbegin','<button class="step" id="reverse"></button>');
-    document.querySelector('#panel').insertAdjacentHTML('beforeend','<button class="step" id="forward"></button>');
+    document.querySelector('#map').insertAdjacentHTML('afterbegin','<button class="step" id="reverse"></button>');
+    document.querySelector('#map').insertAdjacentHTML('beforeend','<button class="step" id="forward"></button>');
 
     document.querySelector('#reverse').insertAdjacentHTML('beforeend','<img src="img/reverse.png">');
     document.querySelector('#forward').insertAdjacentHTML('beforeend','<img src="img/forward.png">');
@@ -183,16 +188,11 @@ function updatePropSymbols(attribute){
             var radius = calcPropRadius(props[attribute]);
             layer.setRadius(radius);
 
-            //add city to popup content string
-            var popupContent = "<p><b>City:</b> " + props.City + "</p>";
-
-            //add formatted attribute to panel content string
-            var year = attribute.split("_")[1];
-            popupContent += "<p><b>Population in " + year + ":</b> " + props[attribute] + " million</p>";
+            var popupContent = new PopupContent(props, attribute);
 
             //update popup content            
             popup = layer.getPopup();            
-            popup.setContent(popupContent).update();
+            popup.setContent(popupContent.formatted).update();
         };
     });
 };
